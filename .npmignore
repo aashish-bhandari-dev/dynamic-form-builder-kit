@@ -1,0 +1,7 @@
+src/
+.vscode/
+.idea/
+coverage/
+.github/
+*.log
+*.tsbuildinfo

@@ -1,0 +1,36 @@
+{
+  "name": "dynamic-form-builder",
+  "version": "1.0.0",
+  "description": "A dynamic form builder",
+  "main": "dist/index.js",
+  "bin": {
+    "dynamic-form-builder": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "components"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "cli",
+    "ui",
+    "components"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^15.0.0",
+    "fs-extra": "^11.3.5",
+    "ora": "^9.4.0",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^25.9.1",
+    "@types/prompts": "^2.4.9",
+    "typescript": "^6.0.3"
+  }
+}
