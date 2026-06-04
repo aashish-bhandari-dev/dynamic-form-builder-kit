@@ -28,9 +28,16 @@ program
     .description('Copy form builder components to components/form-builder/')
     .option('-f, --force', 'Overwrite existing files')
     .option('-p, --path <path>', 'Custom destination path relative to project root')
-    .action(async (opts: { force?: boolean; path?: string }) => {
+    .option('-y, --yes', 'Install missing dependencies without prompting')
+    .option('--skip-deps', 'Skip dependency checks and installation')
+    .action(async (opts: { force?: boolean; path?: string; yes?: boolean; skipDeps?: boolean }) => {
         try {
-            await addFormBuilder({ force: opts.force, path: opts.path });
+            await addFormBuilder({
+                force: opts.force,
+                path: opts.path,
+                yes: opts.yes,
+                skipDeps: opts.skipDeps,
+            });
         } catch (error) {
             console.error(error instanceof Error ? error.message : error);
             process.exit(1);

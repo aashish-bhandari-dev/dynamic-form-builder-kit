@@ -36,18 +36,24 @@ Optional: run on every install in **your** app (not recommended for libraries):
 | Command | Description |
 |---------|-------------|
 | `npx dynamic-form-builder init` | Creates `dfb.config.json` |
-| `npx dynamic-form-builder add` | Copies components to `components/form-builder/` |
+| `npx dynamic-form-builder add` | Copies components; prompts to install missing deps |
+| `npx dynamic-form-builder add --yes` | Copy + install missing deps without prompting |
+| `npx dynamic-form-builder add --skip-deps` | Copy files only, skip dependency checks |
 | `npx dynamic-form-builder add --force` | Overwrite existing files |
 | `npx dynamic-form-builder add -p src/components/form-builder` | Custom destination |
 
 The CLI reads `components.json` aliases so files go to the same folder as your other shadcn components (e.g. `src/components/form-builder`).
 
+After copying, the CLI **audits** your project for required npm packages (`lucide-react`, `react-hot-toast`) and shadcn/ui components. If anything is missing, you'll be asked to install them automatically (npm/pnpm/yarn/bun + `shadcn add`).
+
 ## After `add`
+
+If you declined the install prompt or used `--skip-deps`, install manually:
 
 1. **shadcn components** (if missing):
 
 ```bash
-npx shadcn@latest add button input tabs card label checkbox dropdown-menu select textarea radio-group slider switch
+npx shadcn@latest add button input tabs card label checkbox dropdown-menu select textarea radio-group slider switch --yes
 ```
 
 2. **npm packages**:

@@ -1,17 +1,21 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { FORM_BUILDER_FILES, NPM_DEPENDENCIES, SHADCN_COMPONENTS } from '../registry-manifest';
+import { FORM_BUILDER_FILES } from '../registry-manifest';
 import {
     findProjectRoot,
     getFormBuilderTargetDir,
     getPackageRegistryDir,
     getPackageRoot,
 } from '../utils/paths';
+import { auditDependencies, hasMissingDependencies } from '../utils/dependencies';
+import { promptAndInstallDependencies } from '../utils/prompt-install';
 
 export type AddOptions = {
     cwd?: string;
     force?: boolean;
     path?: string;
+    yes?: boolean;
+    skipDeps?: boolean;
 };
 
 export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
@@ -52,13 +56,27 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
     const relativeTarget = path.relative(projectRoot, targetDir).replace(/\\/g, '/');
 
     console.log('\n✔ Form builder installed to', relativeTarget);
-    console.log('\nNext steps:\n');
-    console.log('1. Install shadcn/ui components (if not already present):');
-    console.log(`   npx shadcn@latest add ${SHADCN_COMPONENTS.join(' ')}\n`);
-    console.log('2. Install npm dependencies:');
-    console.log(`   npm install ${NPM_DEPENDENCIES.join(' ')}\n`);
-    console.log('3. Use the builder in your app:');
-    console.log(`   import { FormBuilder } from '@/components/form-builder/FormBuilder';\n`);
-    console.log(`   (files were written to: ${relativeTarget}/)\n`);
-    console.log('   Provide onSave to persist form schemas to your API.\n');
+
+    const audit = auditDependencies(projectRoot);
+
+    if (!hasMissingDependencies(audit)) {
+        console.log('✔ All required dependencies are already installed.\n');
+    } else {
+        await promptAndInstallDependencies({
+            projectRoot,
+            audit,
+            yes: options.yes,
+            skipDeps: options.skipDeps,
+        });
+
+        const updatedAudit = auditDependencies(projectRoot);
+        if (!hasMissingDependencies(updatedAudit)) {
+            console.log('✔ All required dependencies are now installed.\n');
+        }
+    }
+
+    console.log('\nUse the builder in your app:');
+    console.log(`  import { FormBuilder } from '@/components/form-builder/FormBuilder';\n`);
+    console.log(`  (files at: ${relativeTarget}/)\n`);
+    console.log('  Provide onSave to persist form schemas to your API.\n');
 }
