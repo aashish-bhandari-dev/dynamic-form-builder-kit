@@ -2,6 +2,7 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import type { DependencyAudit } from './dependencies';
+import { auditDependencies } from './dependencies';
 import { detectPackageManager, getInstallCommand } from './package-manager';
 
 function run(command: string, args: string[], cwd: string): Promise<void> {
@@ -64,21 +65,29 @@ export async function installMissingDependencies(
     projectRoot: string,
     audit: DependencyAudit,
 ): Promise<void> {
-    await installNpmPackages(projectRoot, audit.missingNpm);
-
-    if (audit.missingShadcn.length === 0) return;
-
-    const ready = audit.hasComponentsJson || (await ensureShadcnInitialized(projectRoot));
-    if (!ready) {
-        console.warn('\n⚠ Could not initialize shadcn/ui.');
-        console.warn('  Run: npx shadcn@latest init --defaults --yes');
-        console.warn(
-            `  Then: npx shadcn@latest add ${audit.missingShadcn.join(' ')} --yes`,
-        );
-        return;
+    if (audit.missingNpm.length > 0) {
+        await installNpmPackages(projectRoot, audit.missingNpm);
     }
 
-    await installShadcnComponents(projectRoot, audit.missingShadcn);
+    let shadcnToInstall = audit.missingShadcn;
+    if (shadcnToInstall.length === 0) return;
+
+    if (!audit.hasComponentsJson) {
+        const ready = await ensureShadcnInitialized(projectRoot);
+        if (!ready) {
+            console.warn('\n⚠ Could not initialize shadcn/ui.');
+            console.warn('  Run: npx shadcn@latest init --defaults --yes');
+            console.warn(
+                `  Then: npx shadcn@latest add ${shadcnToInstall.join(' ')} --yes`,
+            );
+            return;
+        }
+        shadcnToInstall = auditDependencies(projectRoot).missingShadcn;
+    }
+
+    if (shadcnToInstall.length > 0) {
+        await installShadcnComponents(projectRoot, shadcnToInstall);
+    }
 }
 
 export function printMissingDependencies(projectRoot: string, audit: DependencyAudit): void {

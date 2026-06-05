@@ -57,21 +57,57 @@ export function resolveAliasPath(projectRoot: string, alias: string): string {
     return path.join(projectRoot, subPath);
 }
 
-export function getComponentsAlias(projectRoot: string): string {
+type ComponentsJsonConfig = {
+    aliases?: {
+        components?: string;
+        lib?: string;
+    };
+};
+
+function readComponentsJson(projectRoot: string): ComponentsJsonConfig | null {
     const componentsJsonPath = path.join(projectRoot, 'components.json');
-    if (fs.existsSync(componentsJsonPath)) {
-        try {
-            const config = JSON.parse(fs.readFileSync(componentsJsonPath, 'utf8')) as {
-                aliases?: { components?: string };
-            };
-            if (config.aliases?.components) {
-                return config.aliases.components;
-            }
-        } catch {
-            // fall through
-        }
+    if (!fs.existsSync(componentsJsonPath)) return null;
+    try {
+        return JSON.parse(fs.readFileSync(componentsJsonPath, 'utf8')) as ComponentsJsonConfig;
+    } catch {
+        return null;
     }
-    return '@/components';
+}
+
+export function getComponentsAlias(projectRoot: string): string {
+    return readComponentsJson(projectRoot)?.aliases?.components ?? '@/components';
+}
+
+export function getLibAlias(projectRoot: string): string {
+    return readComponentsJson(projectRoot)?.aliases?.lib ?? '@/lib';
+}
+
+/** `types/` at project root, or existing `src/types` if present. */
+export function getTypesDirectory(projectRoot: string): string {
+    const rootTypes = path.join(projectRoot, 'types');
+    if (fs.existsSync(rootTypes)) {
+        return rootTypes;
+    }
+
+    const srcTypes = path.join(projectRoot, 'src', 'types');
+    if (fs.existsSync(srcTypes)) {
+        return srcTypes;
+    }
+
+    return rootTypes;
+}
+
+export function getTypesFilePath(projectRoot: string, fileName: string): string {
+    return path.join(getTypesDirectory(projectRoot), fileName);
+}
+
+export function getLibDirectory(projectRoot: string): string {
+    const libAlias = getLibAlias(projectRoot);
+    return resolveAliasPath(projectRoot, libAlias);
+}
+
+export function getUtilsFilePath(projectRoot: string, fileName: string): string {
+    return path.join(getLibDirectory(projectRoot), fileName);
 }
 
 export function getFormBuilderTargetDir(
@@ -83,8 +119,12 @@ export function getFormBuilderTargetDir(
     return path.join(componentsDir, subdir);
 }
 
-export function getPackageRegistryDir(packageRoot: string): string {
+export function getPackageRegistryComponentsDir(packageRoot: string): string {
     return path.join(packageRoot, 'registry', 'default', 'form-builder');
+}
+
+export function getPackageRegistrySupportingDir(packageRoot: string): string {
+    return path.join(packageRoot, 'registry', 'default');
 }
 
 export function getPackageRoot(): string {

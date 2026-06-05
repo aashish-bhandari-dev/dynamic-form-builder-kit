@@ -16,7 +16,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Card } from '@/components/ui/card';
-import type { FormField, FormRow } from './types';
+import type { FormField, FormRow } from '@/types/formBuilder.types';
 import Image from 'next/image';
 
 interface FormPreviewProps {

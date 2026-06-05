@@ -16,8 +16,8 @@ import type {
     FormPayload,
     FormRow,
     PaletteFieldTemplate,
-} from './types';
-import { toFormFieldName as toFormFieldNameRaw } from './utils';
+} from '@/types/formBuilder.types';
+import { toFormFieldName as toFormFieldNameRaw } from '@/lib/formBuilderUtils';
 
 export type { CustomFieldSet, FormContent, FormField, FormPayload, FormRow, PaletteFieldTemplate };
 

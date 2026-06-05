@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import type { FormField, FormRow, PaletteFieldTemplate } from './types';
-import { toFormFieldName as toFormFieldNameRaw } from './utils';
+import type { FormField, FormRow, PaletteFieldTemplate } from '@/types/formBuilder.types';
+import { toFormFieldName as toFormFieldNameRaw } from '@/lib/formBuilderUtils';
 import {
     Trash2,
     Copy,

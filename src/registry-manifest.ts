@@ -1,12 +1,13 @@
-export const FORM_BUILDER_FILES = [
+export const FORM_BUILDER_COMPONENT_FILES = [
     'FormBuilder.tsx',
     'FieldPalette.tsx',
     'FormCanvas.tsx',
     'FormPreview.tsx',
-    'types.ts',
-    'utils.ts',
     'index.ts',
 ] as const;
+
+export const FORM_BUILDER_TYPES_FILE = 'formBuilder.types.ts';
+export const FORM_BUILDER_UTILS_FILE = 'formBuilderUtils.ts';
 
 /** npm packages the consumer must install (in addition to shadcn/ui). */
 export const NPM_DEPENDENCIES = ['lucide-react', 'react-hot-toast'] as const;
@@ -27,4 +28,5 @@ export const SHADCN_COMPONENTS = [
     'switch',
 ] as const;
 
-export const REGISTRY_SUBDIR = 'default/form-builder';
+export const REGISTRY_COMPONENTS_DIR = 'default/form-builder';
+export const REGISTRY_SUPPORTING_DIR = 'default';

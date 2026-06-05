@@ -66,7 +66,7 @@ npm install lucide-react react-hot-toast
 
 ```tsx
 import { FormBuilder } from '@/components/form-builder/FormBuilder';
-import type { FormPayload } from '@/components/form-builder/types';
+import type { FormPayload } from '@/types/formBuilder.types';
 
 export default function NewFormPage() {
   return (
@@ -84,22 +84,15 @@ export default function NewFormPage() {
 
 ## What gets copied
 
-| File | Role |
-|------|------|
-| `FormBuilder.tsx` | Main builder shell + save handler |
-| `FieldPalette.tsx` | Field / template palette |
-| `FormCanvas.tsx` | Drag-and-drop canvas + properties |
-| `FormPreview.tsx` | Live preview |
-| `types.ts` | Shared TypeScript types |
-| `utils.ts` | `toFormFieldName` helper |
+| File | Destination | Role |
+|------|-------------|------|
+| `FormBuilder.tsx` | `components/form-builder/` | Main builder shell + save handler |
+| `FieldPalette.tsx` | `components/form-builder/` | Field / template palette |
+| `FormCanvas.tsx` | `components/form-builder/` | Drag-and-drop canvas + properties |
+| `FormPreview.tsx` | `components/form-builder/` | Live preview |
+| `formBuilder.types.ts` | `types/` (created if missing) | Shared TypeScript types |
+| `formBuilderUtils.ts` | `lib/` (uses `@/lib` alias) | `toFormFieldName` helper |
 
 ## Customization
 
 Files are yours after install—edit them freely. Re-run `add --force` to reset from the registry (backs up changes first in git).
-
-## Publish
-
-```bash
-npm run build
-npm publish
-```
