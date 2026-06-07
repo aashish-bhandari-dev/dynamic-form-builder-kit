@@ -119,6 +119,6 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
 
     console.log('\nUse the builder in your app:');
     console.log(`  import { FormBuilder } from '@/components/form-builder/FormBuilder';`);
-    console.log(`  import type { FormPayload } from '@/types/formBuilder.types';\n`);
+    console.log(`  import type { FormPayload } from '@/types/form-builder.types';\n`);
     console.log('  Provide onSave to persist form schemas to your API.\n');
 }

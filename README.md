@@ -66,7 +66,7 @@ npm install lucide-react react-hot-toast
 
 ```tsx
 import { FormBuilder } from '@/components/form-builder/FormBuilder';
-import type { FormPayload } from '@/types/formBuilder.types';
+import type { FormPayload } from '@/types/form-builder.types';
 
 export default function NewFormPage() {
   return (
@@ -90,7 +90,7 @@ export default function NewFormPage() {
 | `FieldPalette.tsx` | `components/form-builder/` | Field / template palette |
 | `FormCanvas.tsx` | `components/form-builder/` | Drag-and-drop canvas + properties |
 | `FormPreview.tsx` | `components/form-builder/` | Live preview |
-| `formBuilder.types.ts` | `types/` (created if missing) | Shared TypeScript types |
+| `form-builder.types.ts` | `types/` (created if missing) | Shared TypeScript types |
 | `form-builder-utils.ts` | `lib/` (uses `@/lib` alias) | `toFormFieldName` helper |
 
 ## Customization

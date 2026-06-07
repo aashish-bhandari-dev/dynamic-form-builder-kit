@@ -6,7 +6,7 @@ export const FORM_BUILDER_COMPONENT_FILES = [
     'index.ts',
 ] as const;
 
-export const FORM_BUILDER_TYPES_FILE = 'formBuilder.types.ts';
+export const FORM_BUILDER_TYPES_FILE = 'form-builder.types.ts';
 export const FORM_BUILDER_UTILS_FILE = 'form-builder-utils.ts';
 
 /** npm packages the consumer must install (in addition to shadcn/ui). */

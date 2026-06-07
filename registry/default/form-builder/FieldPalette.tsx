@@ -4,7 +4,7 @@ import type React from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
-import type { CustomFieldSet, PaletteFieldTemplate } from '@/types/formBuilder.types';
+import type { CustomFieldSet, PaletteFieldTemplate } from '@/types/form-builder.types';
 import {
     Type,
     Mail,
