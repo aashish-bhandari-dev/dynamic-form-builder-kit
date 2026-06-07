@@ -91,7 +91,7 @@ export default function NewFormPage() {
 | `FormCanvas.tsx` | `components/form-builder/` | Drag-and-drop canvas + properties |
 | `FormPreview.tsx` | `components/form-builder/` | Live preview |
 | `formBuilder.types.ts` | `types/` (created if missing) | Shared TypeScript types |
-| `formBuilderUtils.ts` | `lib/` (uses `@/lib` alias) | `toFormFieldName` helper |
+| `form-builder-utils.ts` | `lib/` (uses `@/lib` alias) | `toFormFieldName` helper |
 
 ## Customization
 

@@ -7,7 +7,7 @@ export const FORM_BUILDER_COMPONENT_FILES = [
 ] as const;
 
 export const FORM_BUILDER_TYPES_FILE = 'formBuilder.types.ts';
-export const FORM_BUILDER_UTILS_FILE = 'formBuilderUtils.ts';
+export const FORM_BUILDER_UTILS_FILE = 'form-builder-utils.ts';
 
 /** npm packages the consumer must install (in addition to shadcn/ui). */
 export const NPM_DEPENDENCIES = ['lucide-react', 'react-hot-toast'] as const;
