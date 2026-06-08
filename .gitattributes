@@ -1,0 +1,29 @@
+# Handle line endings automatically for files detected as text
+# and force LF (Unix-style) line endings upon check-in.
+* text=auto eol=lf
+
+# Explicitly declare text files to always be normalized
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.json text
+*.md text
+*.css text
+*.html text
+
+# Declare files to leave as-is without line-ending normalization
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+
+# Exclude configuration and documentation from source control archive exports (git archive)
+.gitignore export-ignore
+.gitattributes export-ignore
+.npmignore export-ignore
+tsconfig.json export-ignore
