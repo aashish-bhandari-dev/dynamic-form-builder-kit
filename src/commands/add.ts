@@ -47,7 +47,7 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
 
     if (!fs.existsSync(registryComponentsDir)) {
         throw new Error(
-            `Registry not found at ${registryComponentsDir}. Reinstall dynamic-form-builder or run from the package source.`,
+            `Registry not found at ${registryComponentsDir}. Reinstall dynamic-form-builder-kit or run from the package source.`,
         );
     }
 

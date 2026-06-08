@@ -7,7 +7,7 @@ import { initFormBuilder } from './commands/init';
 const program = new Command();
 
 program
-    .name('dynamic-form-builder')
+    .name('dynamic-form-builder-kit')
     .description('Copy form builder UI components into your project (shadcn-style)')
     .version(require('../package.json').version);
 

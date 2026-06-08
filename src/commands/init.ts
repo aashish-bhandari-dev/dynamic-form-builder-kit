@@ -11,7 +11,7 @@ export async function initFormBuilder(options: InitOptions = {}): Promise<void> 
     const configPath = path.join(projectRoot, 'dfb.config.json');
 
     const defaults = {
-        $schema: 'https://unpkg.com/dynamic-form-builder/dfb.schema.json',
+        $schema: 'https://unpkg.com/dynamic-form-builder-kit/dfb.schema.json',
         componentPath: 'components/form-builder',
         registry: 'default',
     };
@@ -23,5 +23,5 @@ export async function initFormBuilder(options: InitOptions = {}): Promise<void> 
 
     await fs.writeJson(configPath, defaults, { spaces: 2 });
     console.log('✔ Created dfb.config.json');
-    console.log('\nRun: npx dynamic-form-builder add\n');
+    console.log('\nRun: npx dynamic-form-builder-kit add\n');
 }

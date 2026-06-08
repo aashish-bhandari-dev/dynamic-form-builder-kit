@@ -138,5 +138,5 @@ export function getPackageRoot(): string {
         }
         dir = path.dirname(dir);
     }
-    throw new Error('Could not find dynamic-form-builder package root (registry missing).');
+    throw new Error('Could not find dynamic-form-builder-kit package root (registry missing).');
 }

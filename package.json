@@ -1,11 +1,11 @@
 {
-  "name": "dynamic-form-builder",
+  "name": "dynamic-form-builder-kit",
   "version": "1.0.0",
   "description": "shadcn-style CLI that copies a drag-and-drop form builder into your components directory",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "dynamic-form-builder": "./dist/cli.js",
+    "dynamic-form-builder-kit": "./dist/cli.js",
     "dfb": "./dist/cli.js"
   },
   "files": [

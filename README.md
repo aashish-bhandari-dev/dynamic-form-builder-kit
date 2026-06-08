@@ -1,4 +1,4 @@
-# dynamic-form-builder
+# dynamic-form-builder-kit
 
 Copy a full drag-and-drop **form builder** into your app the same way [shadcn/ui](https://ui.shadcn.com) copies components: source files land in **your** repo under `components/form-builder/`, not inside `node_modules`.
 
@@ -12,13 +12,13 @@ Built on **shadcn/ui** primitives (`Button`, `Input`, `Tabs`, etc.).
 ## Install
 
 ```bash
-npm install dynamic-form-builder
+npm install dynamic-form-builder-kit
 ```
 
 Installing the package does **not** copy files automatically (same as shadcn). Run the CLI once after install:
 
 ```bash
-npx dynamic-form-builder add
+npx dynamic-form-builder-kit add
 ```
 
 Optional: run on every install in **your** app (not recommended for libraries):
@@ -26,7 +26,7 @@ Optional: run on every install in **your** app (not recommended for libraries):
 ```json
 {
   "scripts": {
-    "postinstall": "dynamic-form-builder add --force"
+    "postinstall": "dynamic-form-builder-kit add --force"
   }
 }
 ```
@@ -35,12 +35,12 @@ Optional: run on every install in **your** app (not recommended for libraries):
 
 | Command | Description |
 |---------|-------------|
-| `npx dynamic-form-builder init` | Creates `dfb.config.json` |
-| `npx dynamic-form-builder add` | Copies components; prompts to install missing deps |
-| `npx dynamic-form-builder add --yes` | Copy + install missing deps without prompting |
-| `npx dynamic-form-builder add --skip-deps` | Copy files only, skip dependency checks |
-| `npx dynamic-form-builder add --force` | Overwrite existing files |
-| `npx dynamic-form-builder add -p src/components/form-builder` | Custom destination |
+| `npx dynamic-form-builder-kit init` | Creates `dfb.config.json` |
+| `npx dynamic-form-builder-kit add` | Copies components; prompts to install missing deps |
+| `npx dynamic-form-builder-kit add --yes` | Copy + install missing deps without prompting |
+| `npx dynamic-form-builder-kit add --skip-deps` | Copy files only, skip dependency checks |
+| `npx dynamic-form-builder-kit add --force` | Overwrite existing files |
+| `npx dynamic-form-builder-kit add -p src/components/form-builder` | Custom destination |
 
 The CLI reads `components.json` aliases so files go to the same folder as your other shadcn components (e.g. `src/components/form-builder`).
 
