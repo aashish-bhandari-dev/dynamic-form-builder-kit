@@ -36,117 +36,117 @@ const fieldTypes: Array<{
     icon: React.ReactNode;
     category: string;
 }> = [
-    {
-        type: 'header',
-        label: 'Header',
-        icon: <Heading1 className="w-3.5 h-3.5" />,
-        category: 'Content',
-    },
-    {
-        type: 'paragraph',
-        label: 'Paragraph',
-        icon: <AlignLeft className="w-3.5 h-3.5" />,
-        category: 'Content',
-    },
-    // {
-    //     type: 'image',
-    //     label: 'Image',
-    //     icon: <ImageIcon className="w-3.5 h-3.5" />,
-    //     category: 'Content',
-    // },
-    { type: 'text', label: 'Text', icon: <Type className="w-3.5 h-3.5" />, category: 'Basic' },
-    { type: 'email', label: 'Email', icon: <Mail className="w-3.5 h-3.5" />, category: 'Basic' },
-    {
-        type: 'password',
-        label: 'Password',
-        icon: <Lock className="w-3.5 h-3.5" />,
-        category: 'Basic',
-    },
-    { type: 'number', label: 'Number', icon: <Hash className="w-3.5 h-3.5" />, category: 'Basic' },
-    { type: 'url', label: 'URL', icon: <LinkIcon className="w-3.5 h-3.5" />, category: 'Basic' },
-    { type: 'tel', label: 'Phone', icon: <Phone className="w-3.5 h-3.5" />, category: 'Basic' },
-    {
-        type: 'textarea',
-        label: 'Textarea',
-        icon: <MessageSquare className="w-3.5 h-3.5" />,
-        category: 'Basic',
-    },
+        {
+            type: 'header',
+            label: 'Header',
+            icon: <Heading1 className="w-3.5 h-3.5" />,
+            category: 'Content',
+        },
+        {
+            type: 'paragraph',
+            label: 'Paragraph',
+            icon: <AlignLeft className="w-3.5 h-3.5" />,
+            category: 'Content',
+        },
+        // {
+        //     type: 'image',
+        //     label: 'Image',
+        //     icon: <ImageIcon className="w-3.5 h-3.5" />,
+        //     category: 'Content',
+        // },
+        { type: 'text', label: 'Text', icon: <Type className="w-3.5 h-3.5" />, category: 'Basic' },
+        { type: 'email', label: 'Email', icon: <Mail className="w-3.5 h-3.5" />, category: 'Basic' },
+        {
+            type: 'password',
+            label: 'Password',
+            icon: <Lock className="w-3.5 h-3.5" />,
+            category: 'Basic',
+        },
+        { type: 'number', label: 'Number', icon: <Hash className="w-3.5 h-3.5" />, category: 'Basic' },
+        { type: 'url', label: 'URL', icon: <LinkIcon className="w-3.5 h-3.5" />, category: 'Basic' },
+        { type: 'tel', label: 'Phone', icon: <Phone className="w-3.5 h-3.5" />, category: 'Basic' },
+        {
+            type: 'textarea',
+            label: 'Textarea',
+            icon: <MessageSquare className="w-3.5 h-3.5" />,
+            category: 'Basic',
+        },
 
-    {
-        type: 'date',
-        label: 'Date',
-        icon: <Calendar className="w-3.5 h-3.5" />,
-        category: 'Date & Time',
-    },
-    {
-        type: 'time',
-        label: 'Time',
-        icon: <Clock className="w-3.5 h-3.5" />,
-        category: 'Date & Time',
-    },
-    {
-        type: 'datetime-local',
-        label: 'DateTime',
-        icon: <Calendar className="w-3.5 h-3.5" />,
-        category: 'Date & Time',
-    },
+        {
+            type: 'date',
+            label: 'Date',
+            icon: <Calendar className="w-3.5 h-3.5" />,
+            category: 'Date & Time',
+        },
+        {
+            type: 'time',
+            label: 'Time',
+            icon: <Clock className="w-3.5 h-3.5" />,
+            category: 'Date & Time',
+        },
+        {
+            type: 'datetime-local',
+            label: 'DateTime',
+            icon: <Calendar className="w-3.5 h-3.5" />,
+            category: 'Date & Time',
+        },
 
-    {
-        type: 'checkbox',
-        label: 'Checkbox Group',
-        icon: <CheckSquare className="w-3.5 h-3.5" />,
-        category: 'Selection',
-    },
-    {
-        type: 'radio',
-        label: 'Radio Group',
-        icon: <Radio className="w-3.5 h-3.5" />,
-        category: 'Selection',
-    },
-    {
-        type: 'select',
-        label: 'Select',
-        icon: <ListTodo className="w-3.5 h-3.5" />,
-        category: 'Selection',
-    },
-    {
-        type: 'multiselect',
-        label: 'Multi-Select',
-        icon: <ListTodo className="w-3.5 h-3.5" />,
-        category: 'Selection',
-    },
+        {
+            type: 'checkbox',
+            label: 'Checkbox Group',
+            icon: <CheckSquare className="w-3.5 h-3.5" />,
+            category: 'Selection',
+        },
+        {
+            type: 'radio',
+            label: 'Radio Group',
+            icon: <Radio className="w-3.5 h-3.5" />,
+            category: 'Selection',
+        },
+        {
+            type: 'select',
+            label: 'Select',
+            icon: <ListTodo className="w-3.5 h-3.5" />,
+            category: 'Selection',
+        },
+        {
+            type: 'multiselect',
+            label: 'Multi-Select',
+            icon: <ListTodo className="w-3.5 h-3.5" />,
+            category: 'Selection',
+        },
 
-    {
-        type: 'file',
-        label: 'File Upload',
-        icon: <FileText className="w-3.5 h-3.5" />,
-        category: 'Advanced',
-    },
-    {
-        type: 'toggle',
-        label: 'Toggle',
-        icon: <ToggleLeft className="w-3.5 h-3.5" />,
-        category: 'Advanced',
-    },
-    {
-        type: 'rating',
-        label: 'Rating',
-        icon: <Star className="w-3.5 h-3.5" />,
-        category: 'Advanced',
-    },
-    {
-        type: 'slider',
-        label: 'Slider',
-        icon: <Sliders className="w-3.5 h-3.5" />,
-        category: 'Advanced',
-    },
-    {
-        type: 'hidden',
-        label: 'Hidden Input',
-        icon: <Eye className="w-3.5 h-3.5" />,
-        category: 'Advanced',
-    },
-];
+        {
+            type: 'file',
+            label: 'File Upload',
+            icon: <FileText className="w-3.5 h-3.5" />,
+            category: 'Advanced',
+        },
+        {
+            type: 'toggle',
+            label: 'Toggle',
+            icon: <ToggleLeft className="w-3.5 h-3.5" />,
+            category: 'Advanced',
+        },
+        {
+            type: 'rating',
+            label: 'Rating',
+            icon: <Star className="w-3.5 h-3.5" />,
+            category: 'Advanced',
+        },
+        {
+            type: 'slider',
+            label: 'Slider',
+            icon: <Sliders className="w-3.5 h-3.5" />,
+            category: 'Advanced',
+        },
+        {
+            type: 'hidden',
+            label: 'Hidden Input',
+            icon: <Eye className="w-3.5 h-3.5" />,
+            category: 'Advanced',
+        },
+    ];
 
 const groupedFields = fieldTypes.reduce(
     (acc, field) => {
@@ -306,7 +306,7 @@ export function FieldPalette({
                                         key={set.id}
                                         draggable
                                         onDragStart={(e) => handleTemplateDragStart(e, set.id)}
-                                        className="group cursor-move p-2 border border-border hover:border-primary/50 transition-colors"
+                                        className="group cursor-move p-2 rounded-md hover:border-primary/50 transition-colors"
                                     >
                                         <div className="flex items-center justify-between gap-2">
                                             <h4 className="text-xs font-medium truncate">
