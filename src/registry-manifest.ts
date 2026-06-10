@@ -3,6 +3,7 @@ export const FORM_BUILDER_COMPONENT_FILES = [
     'FieldPalette.tsx',
     'FormCanvas.tsx',
     'FormPreview.tsx',
+    'form-builder.data.ts',
     'index.ts',
 ] as const;
 

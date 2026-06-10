@@ -18,128 +18,14 @@ import type {
     PaletteFieldTemplate,
 } from '@/types/form-builder.types';
 import { toFormFieldName as toFormFieldNameRaw } from '@/lib/form-builder-utils';
+import {
+    fetchFieldSpecs,
+    fetchPaletteFields,
+    fetchCustomFieldSets,
+    type DefaultFieldSpec,
+} from './form-builder.data';
 
-export type { CustomFieldSet, FormContent, FormField, FormPayload, FormRow, PaletteFieldTemplate };
-
-type DefaultFieldSpec = {
-    key: string;
-    id: string;
-    rowId: string;
-    type: string;
-    label: string;
-    placeholder: string;
-    required: boolean;
-    aliases?: string[];
-};
-
-const DEFAULT_FIELD_SPECS: DefaultFieldSpec[] = [
-    {
-        key: 'full_name',
-        id: 'default-full-name',
-        rowId: 'row-default-full-name',
-        type: 'text',
-        label: 'Full Name',
-        placeholder: 'John Doe',
-        required: true,
-    },
-    {
-        key: 'email',
-        id: 'default-email',
-        rowId: 'row-default-email',
-        type: 'email',
-        label: 'Email',
-        placeholder: 'john@example.com',
-        required: true,
-    },
-    {
-        key: 'phone_number',
-        id: 'default-phone',
-        rowId: 'row-default-phone',
-        type: 'tel',
-        label: 'Phone Number',
-        placeholder: '+1 (555) 000-0000',
-        required: false,
-        aliases: ['phone'],
-    },
-];
-
-const PINNED_ROW_IDS_IN_ORDER = DEFAULT_FIELD_SPECS.map((s) => s.rowId);
-
-const DEFAULT_PALETTE_FIELDS: PaletteFieldTemplate[] = [
-    {
-        type: 'checkbox',
-        name: 'interested_country',
-        label: 'Interested Country',
-        options: [
-            'Australia',
-            'United States of America',
-            'Canada',
-            'United Kingdom',
-            'India',
-            'Japan',
-            'Others',
-        ],
-        required: false,
-        columnWidth: 'full',
-    },
-    {
-        type: 'text',
-        name: 'interested_university',
-        label: 'Interested University',
-        placeholder: 'Enter interested university...',
-        required: false,
-        columnWidth: 'full',
-    },
-    {
-        type: 'text',
-        name: 'interested_course',
-        label: 'Interested Course',
-        placeholder: 'Enter interested course...',
-        required: false,
-        columnWidth: 'full',
-    },
-    {
-        type: 'select',
-        name: 'highest_qualification',
-        label: 'Highest Qualification',
-        options: [
-            'SEE',
-            'SLC',
-            'VET',
-            'Diploma',
-            'Bachelor Degree',
-            'Masters Degree',
-            'M Phil',
-            'PHD',
-        ],
-        required: false,
-        columnWidth: 'full',
-    },
-    {
-        type: 'text',
-        name: 'recent_college_name',
-        label: 'Recent College Name',
-        placeholder: 'Enter recent college name...',
-        required: false,
-        columnWidth: 'full',
-    },
-    {
-        type: 'radio',
-        name: 'english_proficiency_test_given',
-        label: 'English Proficiency Test Given',
-        options: ['Yes', 'No'],
-        required: false,
-        columnWidth: 'full',
-    },
-    {
-        type: 'text',
-        name: 'pass_out_year',
-        label: 'Pass out Year',
-        placeholder: 'Enter pass out year...',
-        required: false,
-        columnWidth: 'full',
-    },
-];
+export type { CustomFieldSet, FormContent, FormField, FormPayload, FormRow, PaletteFieldTemplate, DefaultFieldSpec };
 
 type FormBuilderProps = {
     initialTitle?: string;
@@ -163,80 +49,10 @@ export function FormBuilder({
     const [title, setTitle] = useState<string>('');
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
-    const [customFieldSets, setCustomFieldSets] = useState<CustomFieldSet[]>([
-        {
-            id: 'edu-set-5',
-            name: 'Financial Information',
-            fields: [
-                {
-                    id: 'f1',
-                    type: 'select',
-                    name: 'funding_source',
-                    label: 'Source of Funding',
-                    options: ['Self', 'Parents', 'Sponsor', 'Loan'],
-                    required: true,
-                    columnWidth: 'full',
-                    rowId: 'r1',
-                },
-                {
-                    id: 'f2',
-                    type: 'number',
-                    name: 'estimated_budget',
-                    label: 'Estimated Budget (USD)',
-                    placeholder: '20000',
-                    required: true,
-                    columnWidth: 'half',
-                    rowId: 'r2',
-                },
-                {
-                    id: 'f3',
-                    type: 'select',
-                    name: 'education_loan',
-                    label: 'Education Loan',
-                    options: ['Yes', 'No'],
-                    required: true,
-                    columnWidth: 'half',
-                    rowId: 'r2',
-                },
-            ],
-        },
-        {
-            id: 'edu-set-3',
-            name: 'Language Test Scores',
-            fields: [
-                {
-                    id: 'l1',
-                    type: 'select',
-                    name: 'english_test',
-                    label: 'English Proficiency Test',
-                    options: ['IELTS', 'PTE', 'TOEFL', 'Duolingo', 'Not Taken'],
-                    required: true,
-                    columnWidth: 'full',
-                    rowId: 'r1',
-                },
-                {
-                    id: 'l2',
-                    type: 'number',
-                    name: 'overall_score',
-                    label: 'Overall Score',
-                    placeholder: '6.5',
-                    required: false,
-                    columnWidth: 'half',
-                    rowId: 'r2',
-                },
-                {
-                    id: 'l3',
-                    type: 'number',
-                    name: 'test_year',
-                    label: 'Test Year',
-                    placeholder: '2024',
-                    required: false,
-                    columnWidth: 'half',
-                    rowId: 'r2',
-                },
-            ],
-        },
-    ]);
+    const [fieldSpecs, setFieldSpecs] = useState<DefaultFieldSpec[]>([]);
+    const [paletteFields, setPaletteFields] = useState<PaletteFieldTemplate[]>([]);
+    const [customFieldSets, setCustomFieldSets] = useState<CustomFieldSet[]>([]);
+    const [isMetadataLoading, setIsMetadataLoading] = useState<boolean>(true);
 
     const toFormFieldName = useCallback((value: string): string => {
         if (typeof toFormFieldNameRaw === 'function') {
@@ -314,7 +130,7 @@ export function FormBuilder({
             };
 
             const defaultFieldIds: string[] = [];
-            for (const spec of DEFAULT_FIELD_SPECS) {
+            for (const spec of fieldSpecs) {
                 const picked = pickOrCreateDefaultField(spec);
 
                 const desiredName = spec.key;
@@ -349,14 +165,16 @@ export function FormBuilder({
                 defaultFieldIds.push(updated.id);
             }
 
-            const pinnedRows: FormRow[] = DEFAULT_FIELD_SPECS.map((spec, idx) => ({
+            const pinnedRows: FormRow[] = fieldSpecs.map((spec, idx) => ({
                 id: spec.rowId,
                 fields: [defaultFieldIds[idx]],
             }));
 
+            const pinnedRowIds = fieldSpecs.map((s) => s.rowId);
+
             const keptRows: FormRow[] = [];
             for (const row of inputRows ?? []) {
-                if (PINNED_ROW_IDS_IN_ORDER.includes(row.id)) continue;
+                if (pinnedRowIds.includes(row.id)) continue;
                 const filtered = row.fields.filter((fid) => !defaultFieldIds.includes(fid));
                 if (filtered.length === 0) continue;
                 keptRows.push({ ...row, fields: filtered });
@@ -369,7 +187,7 @@ export function FormBuilder({
 
             const orphanRows: FormRow[] = orphanFields.map((f) => {
                 const candidateRowId =
-                    f.rowId && !PINNED_ROW_IDS_IN_ORDER.includes(f.rowId) ? f.rowId : '';
+                    f.rowId && !pinnedRowIds.includes(f.rowId) ? f.rowId : '';
                 const rowId = candidateRowId || `row-${Date.now()}-${f.id}`;
                 const updated = { ...f, rowId };
                 byId.set(updated.id, updated);
@@ -380,7 +198,7 @@ export function FormBuilder({
 
             return { fields: nextFields, rows: [...pinnedRows, ...keptRows, ...orphanRows] };
         },
-        [toFormFieldName],
+        [toFormFieldName, fieldSpecs],
     );
 
     const resetToInitial = useCallback(() => {
@@ -446,12 +264,38 @@ export function FormBuilder({
     }, [initialContent, normalizeWithDefaults, toFormFieldName]);
 
     useEffect(() => {
+        let active = true;
+        async function loadSpecs() {
+            try {
+                const [specs, palette, sets] = await Promise.all([
+                    fetchFieldSpecs(),
+                    fetchPaletteFields(),
+                    fetchCustomFieldSets(),
+                ]);
+                if (active) {
+                    setFieldSpecs(specs);
+                    setPaletteFields(palette);
+                    setCustomFieldSets(sets);
+                    setIsMetadataLoading(false);
+                }
+            } catch (error) {
+                console.error('Failed to load form builder metadata:', error);
+            }
+        }
+        loadSpecs();
+        return () => {
+            active = false;
+        };
+    }, []);
+
+    useEffect(() => {
         setMounted(true);
+        if (isMetadataLoading) return;
         if (initialTitle) {
             setTitle(initialTitle);
         }
         resetToInitial();
-    }, [initialTitle, resetToInitial]);
+    }, [initialTitle, resetToInitial, isMetadataLoading]);
 
     const addFieldToRow = (type: string, rowId?: string) => {
         if (rowId) {
@@ -549,10 +393,9 @@ export function FormBuilder({
         const field = fields.find((f) => f.id === id);
         if (field) {
             const nameKey = toFormFieldName(field.name || '');
-            const isProtected =
-                nameKey === 'full_name' || nameKey === 'email' || nameKey === 'phone_number';
-            if (isProtected) {
-                toast.error('Full Name, Email and Phone Number cannot be removed');
+            const matchingSpec = fieldSpecs.find((spec) => toFormFieldName(spec.key) === nameKey);
+            if (matchingSpec) {
+                toast.error(`${matchingSpec.label} cannot be removed`);
                 return;
             }
             setFields(fields.filter((f) => f.id !== id));
@@ -778,6 +621,17 @@ export function FormBuilder({
 
     if (!mounted) return null;
 
+    if (isMetadataLoading) {
+        return (
+            <div className="flex h-[calc(100vh-6rem)] items-center justify-center bg-background text-foreground rounded-sm border border-border">
+                <div className="flex flex-col items-center gap-2">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <p className="text-sm text-muted-foreground font-medium animate-pulse">Loading form builder configuration...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col bg-background text-foreground h-[calc(100vh-6rem)]">
             <div className="border-b border-border bg-card px-2 py-1.5 shrink-0 rounded-t-sm">
@@ -877,7 +731,7 @@ export function FormBuilder({
                         >
                             <FieldPalette
                                 onAddField={handleAddFieldFromPaletteMobile}
-                                defaultSingleFields={DEFAULT_PALETTE_FIELDS}
+                                defaultSingleFields={paletteFields}
                                 onAddDefaultField={handleAddDefaultFieldMobile}
                                 customFieldSets={customFieldSets}
                                 onAddCustomSet={handleAddCustomSetMobile}
@@ -930,7 +784,7 @@ export function FormBuilder({
                 <div className="hidden md:flex flex-1 h-full overflow-hidden min-h-0 gap-0 bg-background rounded-b-sm">
                     <FieldPalette
                         onAddField={addFieldToRow}
-                        defaultSingleFields={DEFAULT_PALETTE_FIELDS}
+                        defaultSingleFields={paletteFields}
                         onAddDefaultField={(template) =>
                             insertConfiguredFieldAtIndex(template, rows.length)
                         }
