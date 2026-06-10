@@ -48,7 +48,7 @@ export function FormPreview({ fields, rows, loading }: FormPreviewProps) {
                     ) : rows.length === 0 ? (
                         <p className="text-xs text-muted-foreground text-center py-6">No fields</p>
                     ) : (
-                        <Card className="p-3 bg-card border border-border">
+                        <Card className="p-3 bg-card rounded-sm">
                             <div className="space-y-3">
                                 {rows.map((row) => {
                                     const rowFields = row.fields
@@ -70,9 +70,9 @@ export function FormPreview({ fields, rows, loading }: FormPreviewProps) {
                                     const autoSpan =
                                         fullWidthFieldsCount > 0
                                             ? Math.max(
-                                                  1,
-                                                  Math.floor(remainingCols / fullWidthFieldsCount),
-                                              )
+                                                1,
+                                                Math.floor(remainingCols / fullWidthFieldsCount),
+                                            )
                                             : 12;
 
                                     return (
@@ -255,13 +255,13 @@ function PreviewField({ field }: { field: FormField }) {
                 'slider',
                 'rating',
             ].includes(field.type) && (
-                <Input
-                    type={field.type}
-                    placeholder={field.placeholder}
-                    disabled
-                    className="h-7 text-xs"
-                />
-            )}
+                    <Input
+                        type={field.type}
+                        placeholder={field.placeholder}
+                        disabled
+                        className="h-7 text-xs"
+                    />
+                )}
         </div>
     );
 }
