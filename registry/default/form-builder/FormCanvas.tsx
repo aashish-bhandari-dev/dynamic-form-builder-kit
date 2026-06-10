@@ -519,20 +519,16 @@ export function FormCanvas({
                                         ))}
 
                                         <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    className="h-auto p-0.5 self-start mt-3.5 border-dashed bg-transparent hover:bg-accent shrink-0 disabled:opacity-50"
-                                                    title={
-                                                        rowFields.length >= 3
-                                                            ? 'Row is full (max 3)'
-                                                            : 'Add field to row'
-                                                    }
-                                                    disabled={rowFields.length >= 3}
-                                                >
-                                                    <Plus className="w-3 h-3" />
-                                                </Button>
+                                            <DropdownMenuTrigger
+                                                className="flex items-center justify-center border border-dashed border-border rounded-md h-5 w-5 p-0.5 self-start mt-3.5 bg-transparent hover:bg-accent shrink-0 disabled:opacity-50 cursor-pointer"
+                                                title={
+                                                    rowFields.length >= 3
+                                                        ? 'Row is full (max 3)'
+                                                        : 'Add field to row'
+                                                }
+                                                disabled={rowFields.length >= 3}
+                                            >
+                                                <Plus className="w-3 h-3" />
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent
                                                 align="start"
