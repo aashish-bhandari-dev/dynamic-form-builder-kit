@@ -7,7 +7,6 @@ import { FormPreview } from './FormPreview';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Save, Type, Loader2 } from 'lucide-react';
-import toast from 'react-hot-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type {
     CustomFieldSet,
@@ -53,6 +52,20 @@ export function FormBuilder({
     const [paletteFields, setPaletteFields] = useState<PaletteFieldTemplate[]>([]);
     const [customFieldSets, setCustomFieldSets] = useState<CustomFieldSet[]>([]);
     const [isMetadataLoading, setIsMetadataLoading] = useState<boolean>(true);
+    const [toasts, setToasts] = useState<{ id: string; message: string; type: 'success' | 'error' }[]>([]);
+
+    const showToast = useCallback((message: string, type: 'success' | 'error') => {
+        const id = Math.random().toString(36).substring(2, 9);
+        setToasts((prev) => [...prev, { id, message, type }]);
+        setTimeout(() => {
+            setToasts((prev) => prev.filter((t) => t.id !== id));
+        }, 4000);
+    }, []);
+
+    const toast = {
+        success: useCallback((msg: string) => showToast(msg, 'success'), [showToast]),
+        error: useCallback((msg: string) => showToast(msg, 'error'), [showToast]),
+    };
 
     const toFormFieldName = useCallback((value: string): string => {
         if (typeof toFormFieldNameRaw === 'function') {
@@ -818,6 +831,42 @@ export function FormBuilder({
                         rows={rows}
                         loading={Boolean(refKey) && Boolean(isLoading)}
                     />
+                </div>
+                {/* Custom Toast Container */}
+                <div className="fixed top-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none max-w-md w-full">
+                    {toasts.map((t) => (
+                        <div
+                            key={t.id}
+                            className={`pointer-events-auto flex items-start gap-3 p-4 rounded-lg border shadow-md transition-all duration-300 animate-in fade-in slide-in-from-top-5 md:max-w-sm ${
+                                t.type === 'success'
+                                    ? 'bg-background border-emerald-500/30 text-foreground dark:border-emerald-500/20'
+                                    : 'bg-background border-destructive/30 text-foreground dark:border-destructive/20'
+                            }`}
+                            style={{
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+                            }}
+                        >
+                            {t.type === 'success' ? (
+                                <svg className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            ) : (
+                                <svg className="h-5 w-5 text-destructive shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            )}
+                            <div className="flex-1 text-sm leading-5 font-medium">{t.message}</div>
+                            <button
+                                onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
+                                className="text-muted-foreground hover:text-foreground shrink-0 transition-colors ml-1"
+                                aria-label="Close"
+                            >
+                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

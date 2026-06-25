@@ -43,7 +43,7 @@ Optional: run on every install in **your** app (not recommended for libraries):
 
 The CLI reads `components.json` aliases so files go to the same folder as your other shadcn components (e.g. `src/components/form-builder`).
 
-After copying, the CLI **audits** your project for required npm packages (`lucide-react`, `react-hot-toast`) and shadcn/ui components. If anything is missing, you'll be asked to install them automatically (npm/pnpm/yarn/bun + `shadcn add`).
+After copying, the CLI **audits** your project for required npm packages (`lucide-react`) and shadcn/ui components. If anything is missing, you'll be asked to install them automatically (npm/pnpm/yarn/bun + `shadcn add`).
 
 ## After `add`
 
@@ -58,10 +58,10 @@ npx shadcn@latest add button input tabs card label checkbox dropdown-menu select
 2. **npm packages**:
 
 ```bash
-npm install lucide-react react-hot-toast
+npm install lucide-react
 ```
 
-3. **Use in a page** (wrap your app with `Toaster` from `react-hot-toast`):
+3. **Use in a page**:
 
 ```tsx
 import { FormBuilder } from '@/components/form-builder/FormBuilder';
