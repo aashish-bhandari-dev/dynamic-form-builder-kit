@@ -1,5 +1,4 @@
 export { addFormBuilder } from './commands/add';
-export { initFormBuilder } from './commands/init';
 export {
     FORM_BUILDER_COMPONENT_FILES,
     FORM_BUILDER_TYPES_FILE,

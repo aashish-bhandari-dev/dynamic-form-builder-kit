@@ -35,7 +35,6 @@ Optional: run on every install in **your** app (not recommended for libraries):
 
 | Command | Description |
 |---------|-------------|
-| `npx dynamic-form-builder-kit init` | Creates `dfb.config.json` |
 | `npx dynamic-form-builder-kit add` | Copies components; prompts to install missing deps |
 | `npx dynamic-form-builder-kit add --yes` | Copy + install missing deps without prompting |
 | `npx dynamic-form-builder-kit add --skip-deps` | Copy files only, skip dependency checks |
