@@ -4,7 +4,6 @@ export const FORM_BUILDER_COMPONENT_FILES = [
     'FormCanvas.tsx',
     'FormPreview.tsx',
     'form-builder.data.ts',
-    'index.ts',
 ] as const;
 
 export const FORM_BUILDER_TYPES_FILE = 'form-builder.types.ts';
