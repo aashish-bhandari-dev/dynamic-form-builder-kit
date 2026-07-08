@@ -833,11 +833,11 @@ export function FormBuilder({
                     />
                 </div>
                 {/* Custom Toast Container */}
-                <div className="fixed top-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none max-w-md w-full">
+                <div className="fixed top-4 right-4 left-4 md:left-auto z-[9999] flex flex-col gap-2 pointer-events-none w-auto md:w-full md:max-w-sm">
                     {toasts.map((t) => (
                         <div
                             key={t.id}
-                            className={`pointer-events-auto flex items-start gap-3 p-4 rounded-lg border shadow-md transition-all duration-300 animate-in fade-in slide-in-from-top-5 md:max-w-sm ${
+                            className={`pointer-events-auto flex w-full items-start gap-3 p-4 rounded-lg border shadow-md transition-all duration-300 animate-in fade-in slide-in-from-top-5 ${
                                 t.type === 'success'
                                     ? 'bg-background border-emerald-500/30 text-foreground dark:border-emerald-500/20'
                                     : 'bg-background border-destructive/30 text-foreground dark:border-destructive/20'
