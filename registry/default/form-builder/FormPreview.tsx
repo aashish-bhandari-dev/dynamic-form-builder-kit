@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,15 +24,33 @@ interface FormPreviewProps {
     fields: FormField[];
     rows: FormRow[];
     loading?: boolean;
+    selectedFieldId?: string | null;
 }
 
-export function FormPreview({ fields, rows, loading }: FormPreviewProps) {
+export function FormPreview({ fields, rows, loading, selectedFieldId }: FormPreviewProps) {
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (selectedFieldId && scrollContainerRef.current) {
+            const timer = setTimeout(() => {
+                const element = document.getElementById(`preview-field-${selectedFieldId}`);
+                if (element && scrollContainerRef.current) {
+                    element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                    });
+                }
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [selectedFieldId]);
+
     return (
         <div className="w-full md:w-80 lg:w-96 border-t md:border-t-0 md:border-l border-border bg-card flex flex-col shrink-0 min-h-0 h-full">
             <div className="px-2 py-1.5 border-b border-border shrink-0">
                 <h2 className="font-semibold text-xs uppercase text-muted-foreground">Preview</h2>
             </div>
-            <div className="flex-1 overflow-y-auto scrollbar-thin">
+            <div ref={scrollContainerRef} className="flex-1 overflow-y-auto scrollbar-thin">
                 <div className="p-2">
                     {loading ? (
                         <Card className="p-3 bg-card border border-border animate-pulse">
@@ -91,8 +110,18 @@ export function FormPreview({ fields, rows, loading }: FormPreviewProps) {
                                                     colSpanClass = `col-span-${autoSpan}`;
                                                 }
 
+                                                const isSelected = selectedFieldId === field.id;
+
                                                 return (
-                                                    <div key={field.id} className={colSpanClass}>
+                                                    <div
+                                                        key={field.id}
+                                                        id={`preview-field-${field.id}`}
+                                                        className={`${colSpanClass} transition-all duration-300 rounded-md p-1.5 ${
+                                                            isSelected
+                                                                ? 'ring-1 ring-primary/20 bg-primary/3 dark:bg-muted/50 border border-primary/10'
+                                                                : 'ring-0 ring-transparent border border-transparent'
+                                                        }`}
+                                                    >
                                                         <PreviewField field={field} />
                                                     </div>
                                                 );

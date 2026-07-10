@@ -789,6 +789,7 @@ export function FormBuilder({
                                 fields={fields}
                                 rows={rows}
                                 loading={Boolean(refKey) && Boolean(isLoading)}
+                                selectedFieldId={selectedFieldId}
                             />
                         </TabsContent>
                     </Tabs>
@@ -830,6 +831,7 @@ export function FormBuilder({
                         fields={fields}
                         rows={rows}
                         loading={Boolean(refKey) && Boolean(isLoading)}
+                        selectedFieldId={selectedFieldId}
                     />
                 </div>
                 {/* Custom Toast Container */}
