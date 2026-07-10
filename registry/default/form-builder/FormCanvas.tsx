@@ -193,7 +193,7 @@ export function FormCanvas({
                     if (rowElement && scrollContainerRef.current) {
                         rowElement.scrollIntoView({
                             behavior: 'smooth',
-                            block: 'nearest',
+                            block: 'center',
                         });
                     }
                 }, 150);

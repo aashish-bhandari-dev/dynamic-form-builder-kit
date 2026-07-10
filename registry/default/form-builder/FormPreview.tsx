@@ -37,7 +37,7 @@ export function FormPreview({ fields, rows, loading, selectedFieldId }: FormPrev
                 if (element && scrollContainerRef.current) {
                     element.scrollIntoView({
                         behavior: 'smooth',
-                        block: 'nearest',
+                        block: 'center',
                     });
                 }
             }, 100);
@@ -118,7 +118,7 @@ export function FormPreview({ fields, rows, loading, selectedFieldId }: FormPrev
                                                         id={`preview-field-${field.id}`}
                                                         className={`${colSpanClass} transition-all duration-300 rounded-md p-1.5 ${
                                                             isSelected
-                                                                ? 'ring-1 ring-primary/20 bg-primary/3 dark:bg-muted/50 border border-primary/10'
+                                                                ? 'bg-primary/3 dark:bg-muted/50 border border-primary/10'
                                                                 : 'ring-0 ring-transparent border border-transparent'
                                                         }`}
                                                     >
