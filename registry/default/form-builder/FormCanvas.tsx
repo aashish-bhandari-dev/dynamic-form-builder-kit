@@ -477,11 +477,10 @@ export function FormCanvas({
                                         onDragOver={(e) => handleRowDragOver(e, rowIndex)}
                                         onDrop={(e) => handleRowDrop(e, rowIndex)}
                                         onDragLeave={() => setDropTarget(null)}
-                                        className={`relative flex gap-1 items-stretch p-1.5 rounded border transition-all cursor-grab active:cursor-grabbing ${
-                                            draggedRowId === row.id
+                                        className={`relative flex gap-1 items-stretch p-1.5 rounded border transition-all cursor-grab active:cursor-grabbing ${draggedRowId === row.id
                                                 ? 'border-primary bg-primary/5 border-2'
                                                 : 'border-border hover:border-border/70'
-                                        }`}
+                                            }`}
                                     >
                                         {dropTarget?.index === rowIndex &&
                                             dropTarget.position === 'top' && (
@@ -618,7 +617,7 @@ export function FormCanvas({
                                                             : {}),
                                                     });
                                                 }}
-                                                className="mt-0.5 h-6 text-xs"
+                                                className="mt-0.5 h-6 text-[11px]"
                                                 disabled={isDefaultField(selectedField)}
                                             />
                                         </div>
@@ -658,7 +657,7 @@ export function FormCanvas({
                                                     name: toFormFieldName(e.target.value),
                                                 })
                                             }
-                                            className="mt-0.5 h-6 text-xs"
+                                            className="mt-0.5 h-6 text-[11px]"
                                             placeholder="full_name"
                                             disabled={isDefaultField(selectedField)}
                                         />
@@ -673,7 +672,7 @@ export function FormCanvas({
                                                     placeholder: e.target.value,
                                                 })
                                             }
-                                            className="mt-0.5 h-6 text-xs"
+                                            className="mt-0.5 h-6 text-[11px]"
                                         />
                                     </div>
 
@@ -686,18 +685,17 @@ export function FormCanvas({
                                                     helpText: e.target.value,
                                                 })
                                             }
-                                            className="mt-0.5 h-6 text-xs"
+                                            className="mt-0.5 h-6 text-[11px]"
                                         />
                                     </div>
 
                                     <div
-                                        className={`grid gap-2 ${
-                                            ['radio', 'checkbox', 'multiselect'].includes(
-                                                selectedField.type,
-                                            )
+                                        className={`grid gap-2 ${['radio', 'checkbox', 'multiselect'].includes(
+                                            selectedField.type,
+                                        )
                                                 ? 'grid-cols-2'
                                                 : 'grid-cols-1'
-                                        }`}
+                                            }`}
                                     >
                                         <div className="space-y-1">
                                             <Label className="text-xs font-medium">
@@ -711,20 +709,20 @@ export function FormCanvas({
                                                     })
                                                 }
                                             >
-                                                <SelectTrigger className="mt-0.5 h-6 text-xs w-full">
+                                                <SelectTrigger className="mt-0.5 h-6! py-0 w-full">
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="full" className="text-xs">
+                                                    <SelectItem value="full" className="text-[12px]">
                                                         Full Width
                                                     </SelectItem>
-                                                    <SelectItem value="half" className="text-xs">
+                                                    <SelectItem value="half" className="text-[12px]">
                                                         Half Width (1/2)
                                                     </SelectItem>
-                                                    <SelectItem value="third" className="text-xs">
+                                                    <SelectItem value="third" className="text-[12px]">
                                                         One Third (1/3)
                                                     </SelectItem>
-                                                    <SelectItem value="quarter" className="text-xs">
+                                                    <SelectItem value="quarter" className="text-[12px]">
                                                         One Quarter (1/4)
                                                     </SelectItem>
                                                 </SelectContent>
@@ -734,111 +732,111 @@ export function FormCanvas({
                                         {['radio', 'checkbox', 'multiselect'].includes(
                                             selectedField.type,
                                         ) && (
-                                            <div className="space-y-1">
-                                                <Label className="text-xs font-medium">
-                                                    Layout
-                                                </Label>
-                                                <Select
-                                                    value={
-                                                        selectedField.orientation || 'horizontal'
-                                                    }
-                                                    onValueChange={(value) =>
-                                                        onUpdateField(selectedField.id, {
-                                                            orientation: value as any,
-                                                        })
-                                                    }
-                                                >
-                                                    <SelectTrigger className="mt-0.5 h-6 text-xs w-full">
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem
-                                                            value="horizontal"
-                                                            className="text-xs"
-                                                        >
-                                                            Horizontal
-                                                        </SelectItem>
-                                                        <SelectItem
-                                                            value="vertical"
-                                                            className="text-xs"
-                                                        >
-                                                            Vertical
-                                                        </SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                        )}
+                                                <div className="space-y-1">
+                                                    <Label className="text-xs font-medium">
+                                                        Layout
+                                                    </Label>
+                                                    <Select
+                                                        value={
+                                                            selectedField.orientation || 'horizontal'
+                                                        }
+                                                        onValueChange={(value) =>
+                                                            onUpdateField(selectedField.id, {
+                                                                orientation: value as any,
+                                                            })
+                                                        }
+                                                    >
+                                                        <SelectTrigger className="mt-0.5 h-6! py-0 text-[13px] w-full">
+                                                            <SelectValue />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem
+                                                                value="horizontal"
+                                                                className="text-[12px]"
+                                                            >
+                                                                Horizontal
+                                                            </SelectItem>
+                                                            <SelectItem
+                                                                value="vertical"
+                                                                className="text-[12px]"
+                                                            >
+                                                                Vertical
+                                                            </SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                            )}
                                     </div>
 
                                     {['select', 'radio', 'checkbox', 'multiselect'].includes(
                                         selectedField.type,
                                     ) && (
-                                        <div className="space-y-2">
-                                            <Label className="text-xs font-medium">Options</Label>
-                                            <div className="space-y-1.5">
-                                                {(selectedField.options || []).map(
-                                                    (option, idx) => (
-                                                        <div key={idx} className="flex gap-1">
-                                                            <Input
-                                                                value={option}
-                                                                onChange={(e) => {
-                                                                    const newOptions = [
-                                                                        ...(selectedField.options ||
-                                                                            []),
-                                                                    ];
-                                                                    newOptions[idx] =
-                                                                        e.target.value;
-                                                                    onUpdateField(
-                                                                        selectedField.id,
-                                                                        {
-                                                                            options: newOptions,
-                                                                        },
-                                                                    );
-                                                                }}
-                                                                className="h-7 text-xs flex-1"
-                                                                placeholder={`Option ${idx + 1}`}
-                                                            />
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-7 w-7 shrink-0 text-destructive hover:bg-destructive/10"
-                                                                onClick={() => {
-                                                                    const newOptions = (
-                                                                        selectedField.options || []
-                                                                    ).filter((_, i) => i !== idx);
-                                                                    onUpdateField(
-                                                                        selectedField.id,
-                                                                        {
-                                                                            options: newOptions,
-                                                                        },
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 className="w-3.5 h-3.5" />
-                                                            </Button>
-                                                        </div>
-                                                    ),
-                                                )}
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    className="w-full h-7 text-xs border-dashed"
-                                                    onClick={() => {
-                                                        const newOptions = [
-                                                            ...(selectedField.options || []),
-                                                            `Option ${(selectedField.options?.length || 0) + 1}`,
-                                                        ];
-                                                        onUpdateField(selectedField.id, {
-                                                            options: newOptions,
-                                                        });
-                                                    }}
-                                                >
-                                                    <Plus className="w-3 h-3 mr-1" />
-                                                    Add Option
-                                                </Button>
+                                            <div className="space-y-2">
+                                                <Label className="text-xs font-medium">Options</Label>
+                                                <div className="space-y-1.5">
+                                                    {(selectedField.options || []).map(
+                                                        (option, idx) => (
+                                                            <div key={idx} className="flex gap-1">
+                                                                <Input
+                                                                    value={option}
+                                                                    onChange={(e) => {
+                                                                        const newOptions = [
+                                                                            ...(selectedField.options ||
+                                                                                []),
+                                                                        ];
+                                                                        newOptions[idx] =
+                                                                            e.target.value;
+                                                                        onUpdateField(
+                                                                            selectedField.id,
+                                                                            {
+                                                                                options: newOptions,
+                                                                            },
+                                                                        );
+                                                                    }}
+                                                                    className="h-6 text-[11px] flex-1"
+                                                                    placeholder={`Option ${idx + 1}`}
+                                                                />
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-6 w-6 shrink-0 text-destructive hover:bg-destructive/10"
+                                                                    onClick={() => {
+                                                                        const newOptions = (
+                                                                            selectedField.options || []
+                                                                        ).filter((_, i) => i !== idx);
+                                                                        onUpdateField(
+                                                                            selectedField.id,
+                                                                            {
+                                                                                options: newOptions,
+                                                                            },
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 className="w-3 h-3" />
+                                                                </Button>
+                                                            </div>
+                                                        ),
+                                                    )}
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="w-full h-6 text-[11px] border-dashed"
+                                                        onClick={() => {
+                                                            const newOptions = [
+                                                                ...(selectedField.options || []),
+                                                                `Option ${(selectedField.options?.length || 0) + 1}`,
+                                                            ];
+                                                            onUpdateField(selectedField.id, {
+                                                                options: newOptions,
+                                                            });
+                                                        }}
+                                                    >
+                                                        <Plus className="w-2.5 h-2.5 mr-1" />
+                                                        Add Option
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
 
                                     {['number', 'slider'].includes(selectedField.type) && (
                                         <div className="grid grid-cols-3 gap-1">
@@ -854,7 +852,7 @@ export function FormCanvas({
                                                             ),
                                                         })
                                                     }
-                                                    className="mt-0.5 h-6 text-xs"
+                                                    className="mt-0.5 h-6 text-[11px]"
                                                 />
                                             </div>
                                             <div className="space-y-1">
@@ -869,7 +867,7 @@ export function FormCanvas({
                                                             ),
                                                         })
                                                     }
-                                                    className="mt-0.5 h-6 text-xs"
+                                                    className="mt-0.5 h-6 text-[11px]"
                                                 />
                                             </div>
                                             <div className="space-y-1">
@@ -882,7 +880,7 @@ export function FormCanvas({
                                                             step: Number.parseInt(e.target.value),
                                                         })
                                                     }
-                                                    className="mt-0.5 h-6 text-xs"
+                                                    className="mt-0.5 h-6 text-[11px]"
                                                 />
                                             </div>
                                         </div>
@@ -899,7 +897,7 @@ export function FormCanvas({
                                                         rows: Number.parseInt(e.target.value),
                                                     })
                                                 }
-                                                className="mt-0.5 h-6 text-xs"
+                                                className="mt-0.5 h-6 text-[11px]"
                                             />
                                         </div>
                                     )}
@@ -915,7 +913,7 @@ export function FormCanvas({
                                                         accept: e.target.value,
                                                     })
                                                 }
-                                                className="mt-0.5 h-6 text-xs"
+                                                className="mt-0.5 h-6 text-[11px]"
                                             />
                                         </div>
                                     )}
@@ -923,24 +921,24 @@ export function FormCanvas({
                                     {['header', 'paragraph', 'image'].includes(
                                         selectedField.type,
                                     ) && (
-                                        <div className="space-y-1">
-                                            <Label className="text-xs font-medium">Content</Label>
-                                            <Input
-                                                value={selectedField.placeholder || ''}
-                                                onChange={(e) =>
-                                                    onUpdateField(selectedField.id, {
-                                                        placeholder: e.target.value,
-                                                    })
-                                                }
-                                                className="mt-0.5 h-6 text-xs"
-                                                placeholder={
-                                                    selectedField.type === 'image'
-                                                        ? 'Image URL'
-                                                        : 'Text content'
-                                                }
-                                            />
-                                        </div>
-                                    )}
+                                            <div className="space-y-1">
+                                                <Label className="text-xs font-medium">Content</Label>
+                                                <Input
+                                                    value={selectedField.placeholder || ''}
+                                                    onChange={(e) =>
+                                                        onUpdateField(selectedField.id, {
+                                                            placeholder: e.target.value,
+                                                        })
+                                                    }
+                                                    className="mt-0.5 h-6 text-[11px]"
+                                                    placeholder={
+                                                        selectedField.type === 'image'
+                                                            ? 'Image URL'
+                                                            : 'Text content'
+                                                    }
+                                                />
+                                            </div>
+                                        )}
                                 </div>
                             </div>
                         )}
@@ -966,8 +964,7 @@ function FieldCard({
 }: any) {
     return (
         <Card
-            className={`p-1.5 cursor-pointer transition-all rounded-md ${
-                isSelected
+            className={`p-1.5 cursor-pointer transition-all rounded-md ${isSelected
                     ? `
                 border-border
                 ring-1 ring-primary/25
@@ -975,20 +972,20 @@ function FieldCard({
                 dark:bg-muted
               `
                     : isDragged
-                      ? `
+                        ? `
                 border-border
                 ring-1 ring-primary/20
                 bg-primary/5
                 dark:bg-muted/30
                 opacity-80
               `
-                      : `
+                        : `
                 border-border
                 hover:ring-1 hover:ring-primary/20
                 hover:bg-accent/20
                 dark:hover:bg-muted/30
               `
-            }`}
+                }`}
             onClick={onSelect}
         >
             <div className="space-y-0.5">
