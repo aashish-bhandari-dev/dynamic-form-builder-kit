@@ -37,13 +37,15 @@ function readTsConfig(projectRoot: string): TsConfig | null {
 
 /** Resolve `@/components` (or similar) to a filesystem path under the project root. */
 export function resolveAliasPath(projectRoot: string, alias: string): string {
-    if (!alias.startsWith('@/')) {
+    const prefix = alias.startsWith('@/') ? '@/' : alias.startsWith('~/') ? '~/' : null;
+
+    if (!prefix) {
         return path.join(projectRoot, alias);
     }
 
     const subPath = alias.slice(2);
     const tsconfig = readTsConfig(projectRoot);
-    const pathKey = tsconfig?.compilerOptions?.paths?.['@/*']?.[0];
+    const pathKey = tsconfig?.compilerOptions?.paths?.[`${prefix}*`]?.[0];
 
     if (pathKey) {
         const base = pathKey.replace(/\/\*$/, '').replace(/^\.\//, '');
@@ -58,9 +60,11 @@ export function resolveAliasPath(projectRoot: string, alias: string): string {
 }
 
 type ComponentsJsonConfig = {
+    tsx?: boolean;
     aliases?: {
         components?: string;
         lib?: string;
+        ui?: string;
     };
 };
 
@@ -74,12 +78,35 @@ function readComponentsJson(projectRoot: string): ComponentsJsonConfig | null {
     }
 }
 
+export function isTsxProject(projectRoot: string): boolean {
+    const config = readComponentsJson(projectRoot);
+    if (config && config.tsx === false) {
+        return false;
+    }
+    return fs.existsSync(path.join(projectRoot, 'tsconfig.json'));
+}
+
+export function getAliasPrefix(projectRoot: string): string {
+    const componentsAlias = getComponentsAlias(projectRoot);
+    if (componentsAlias.startsWith('~/')) return '~/';
+    if (componentsAlias.startsWith('@/')) return '@/';
+    return '@/';
+}
+
 export function getComponentsAlias(projectRoot: string): string {
     return readComponentsJson(projectRoot)?.aliases?.components ?? '@/components';
 }
 
+export function getUiAlias(projectRoot: string): string {
+    return readComponentsJson(projectRoot)?.aliases?.ui ?? `${getComponentsAlias(projectRoot)}/ui`;
+}
+
 export function getLibAlias(projectRoot: string): string {
-    return readComponentsJson(projectRoot)?.aliases?.lib ?? '@/lib';
+    return readComponentsJson(projectRoot)?.aliases?.lib ?? `${getAliasPrefix(projectRoot)}lib`;
+}
+
+export function getTypesAlias(projectRoot: string): string {
+    return `${getAliasPrefix(projectRoot)}types`;
 }
 
 /** `types/` at project root, or existing `src/types` if present. */

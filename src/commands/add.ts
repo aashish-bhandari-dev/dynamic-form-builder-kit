@@ -15,6 +15,11 @@ import {
     getTypesDirectory,
     getTypesFilePath,
     getUtilsFilePath,
+    getUiAlias,
+    getLibAlias,
+    getTypesAlias,
+    isTsxProject,
+    getComponentsAlias,
 } from '../utils/paths';
 import { auditDependencies, hasMissingDependencies } from '../utils/dependencies';
 import { promptAndInstallDependencies } from '../utils/prompt-install';
@@ -33,6 +38,25 @@ function getInstalledPaths(projectRoot: string, componentDir: string) {
         getTypesFilePath(projectRoot, FORM_BUILDER_TYPES_FILE),
         getUtilsFilePath(projectRoot, FORM_BUILDER_UTILS_FILE),
     ];
+}
+
+async function copyAndReplaceAliases(
+    source: string,
+    dest: string,
+    projectRoot: string,
+): Promise<void> {
+    let content = await fs.readFile(source, 'utf8');
+
+    const uiAlias = getUiAlias(projectRoot);
+    const libAlias = getLibAlias(projectRoot);
+    const typesAlias = getTypesAlias(projectRoot);
+
+    content = content
+        .replace(/@\/components\/ui\//g, `${uiAlias}/`)
+        .replace(/@\/lib\/form-builder-utils/g, `${libAlias}/form-builder-utils`)
+        .replace(/@\/types\/form-builder.types/g, `${typesAlias}/form-builder.types`);
+
+    await fs.outputFile(dest, content, 'utf8');
 }
 
 export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
@@ -75,7 +99,7 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
         if (!fs.existsSync(source)) {
             throw new Error(`Missing registry file: ${source}`);
         }
-        await fs.copy(source, dest, { overwrite: true });
+        await copyAndReplaceAliases(source, dest, projectRoot);
     }
 
     const typesSource = path.join(registrySupportingDir, FORM_BUILDER_TYPES_FILE);
@@ -88,8 +112,8 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
         throw new Error(`Missing registry file: ${utilsSource}`);
     }
 
-    await fs.copy(typesSource, typesDest, { overwrite: true });
-    await fs.copy(utilsSource, utilsDest, { overwrite: true });
+    await copyAndReplaceAliases(typesSource, typesDest, projectRoot);
+    await copyAndReplaceAliases(utilsSource, utilsDest, projectRoot);
 
     const relativeTarget = path.relative(projectRoot, targetDir).replace(/\\/g, '/');
     const relativeTypes = path.relative(projectRoot, typesDest).replace(/\\/g, '/');
@@ -117,8 +141,19 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
         }
     }
 
+    const isTs = isTsxProject(projectRoot);
+    if (!isTs) {
+        console.log('\n⚠ Warning: TypeScript not detected for this project.');
+        console.log('  The form builder components were copied as TypeScript (.tsx/.ts).');
+        console.log('  You may need to rename them to .jsx/.js and remove type annotations,');
+        console.log('  or configure TypeScript in your project.\n');
+    }
+
+    const componentsAlias = getComponentsAlias(projectRoot);
+    const typesAlias = getTypesAlias(projectRoot);
+
     console.log('\nUse the builder in your app:');
-    console.log(`  import { FormBuilder } from '@/components/form-builder/FormBuilder';`);
-    console.log(`  import type { FormPayload } from '@/types/form-builder.types';\n`);
+    console.log(`  import { FormBuilder } from '${componentsAlias}/form-builder/FormBuilder';`);
+    console.log(`  import type { FormPayload } from '${typesAlias}/form-builder.types';\n`);
     console.log('  Provide onSave to persist form schemas to your API.\n');
 }
