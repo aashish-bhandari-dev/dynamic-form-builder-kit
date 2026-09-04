@@ -23,6 +23,7 @@ import {
 } from '../utils/paths';
 import { auditDependencies, hasMissingDependencies } from '../utils/dependencies';
 import { promptAndInstallDependencies } from '../utils/prompt-install';
+import { colors } from '../utils/colors';
 
 export type AddOptions = {
     cwd?: string;
@@ -119,14 +120,14 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
     const relativeTypes = path.relative(projectRoot, typesDest).replace(/\\/g, '/');
     const relativeUtils = path.relative(projectRoot, utilsDest).replace(/\\/g, '/');
 
-    console.log('\n✔ Form builder components installed to', relativeTarget);
-    console.log('✔ Types installed to', relativeTypes);
-    console.log('✔ Utils installed to', relativeUtils);
+    console.log(`\n${colors.green('✔')} Form builder components installed to ${colors.cyan(relativeTarget)}`);
+    console.log(`${colors.green('✔')} Types installed to ${colors.cyan(relativeTypes)}`);
+    console.log(`${colors.green('✔')} Utils installed to ${colors.cyan(relativeUtils)}`);
 
     const audit = auditDependencies(projectRoot);
 
     if (!hasMissingDependencies(audit)) {
-        console.log('✔ All required dependencies are already installed.\n');
+        console.log(`${colors.green('✔')} All required dependencies are already installed.\n`);
     } else {
         await promptAndInstallDependencies({
             projectRoot,
@@ -137,23 +138,22 @@ export async function addFormBuilder(options: AddOptions = {}): Promise<void> {
 
         const updatedAudit = auditDependencies(projectRoot);
         if (!hasMissingDependencies(updatedAudit)) {
-            console.log('✔ All required dependencies are now installed.\n');
+            console.log(`${colors.green('✔')} All required dependencies are now installed.\n`);
         }
     }
 
     const isTs = isTsxProject(projectRoot);
     if (!isTs) {
-        console.log('\n⚠ Warning: TypeScript not detected for this project.');
+        console.log(`\n${colors.yellow('⚠ Warning: TypeScript not detected for this project.')}`);
         console.log('  The form builder components were copied as TypeScript (.tsx/.ts).');
-        console.log('  You may need to rename them to .jsx/.js and remove type annotations,');
-        console.log('  or configure TypeScript in your project.\n');
+        console.log('  You may need to rename them to .jsx/.js or configure TypeScript in your project.\n');
     }
 
     const componentsAlias = getComponentsAlias(projectRoot);
     const typesAlias = getTypesAlias(projectRoot);
 
-    console.log('\nUse the builder in your app:');
-    console.log(`  import { FormBuilder } from '${componentsAlias}/form-builder/FormBuilder';`);
-    console.log(`  import type { FormPayload } from '${typesAlias}/form-builder.types';\n`);
+    console.log(`${colors.bold('Quickstart Usage:')}`);
+    console.log(`  ${colors.cyan(`import { FormBuilder } from '${componentsAlias}/form-builder/FormBuilder';`)}`);
+    console.log(`  ${colors.cyan(`import type { FormPayload } from '${typesAlias}/form-builder.types';`)}\n`);
     console.log('  Provide onSave to persist form schemas to your API.\n');
 }

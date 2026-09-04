@@ -1,15 +1,20 @@
 {
   "name": "dynamic-form-builder-kit",
   "version": "1.0.0",
-  "description": "shadcn-style CLI that copies a drag-and-drop form builder into your components directory",
+  "description": "Production-ready, customizable drag-and-drop dynamic form builder kit built on shadcn/ui",
   "keywords": [
     "form-builder",
+    "dynamic-form",
+    "dynamic-form-builder",
     "shadcn",
+    "shadcn-ui",
     "react",
     "nextjs",
     "cli",
     "ui",
-    "components"
+    "components",
+    "radix-ui",
+    "tailwind"
   ],
   "homepage": "https://github.com/Sandezh/dynamic-form-builder#readme",
   "bugs": {
@@ -20,13 +25,14 @@
     "url": "git+https://github.com/Sandezh/dynamic-form-builder.git"
   },
   "license": "MIT",
-  "author": "",
+  "author": "Sandesh",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
@@ -37,13 +43,16 @@
   },
   "files": [
     "dist",
+    "!dist/tests",
     "registry",
     "README.md"
   ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test dist/tests/**/*.test.js",
+    "prepublishOnly": "npm run test"
   },
   "dependencies": {
     "commander": "^12.1.0",
@@ -58,12 +67,14 @@
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0",
-    "next": ">=14.0.0"
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "peerDependenciesMeta": {
-    "next": {
-      "description": "Required for next/image in FormPreview"
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
     }
   },
   "engines": {

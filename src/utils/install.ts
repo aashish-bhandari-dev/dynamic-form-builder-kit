@@ -3,7 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import type { DependencyAudit } from './dependencies';
 import { auditDependencies } from './dependencies';
-import { detectPackageManager, getInstallCommand } from './package-manager';
+import { detectPackageManager, getInstallCommand, getExecuteCommand } from './package-manager';
+import { colors } from './colors';
 
 function run(command: string, args: string[], cwd: string): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -30,9 +31,9 @@ export async function installNpmPackages(
     const pm = detectPackageManager(projectRoot);
     const { command, args } = getInstallCommand(pm, packages);
 
-    console.log(`\n→ Installing npm packages (${pm}): ${packages.join(', ')}`);
+    console.log(`\n${colors.cyan('→')} Installing npm packages (${pm}): ${colors.bold(packages.join(', '))}`);
     await run(command, args, projectRoot);
-    console.log('✔ npm packages installed');
+    console.log(`${colors.green('✔')} npm packages installed`);
 }
 
 export async function ensureShadcnInitialized(projectRoot: string): Promise<boolean> {
@@ -40,12 +41,15 @@ export async function ensureShadcnInitialized(projectRoot: string): Promise<bool
         return true;
     }
 
-    console.log('\n→ Initializing shadcn/ui (components.json not found)...');
-    await run('npx', ['shadcn@latest', 'init', '--defaults', '--yes'], projectRoot);
+    const pm = detectPackageManager(projectRoot);
+    const { command, args } = getExecuteCommand(pm, ['shadcn@latest', 'init', '--defaults', '--yes']);
+
+    console.log(`\n${colors.cyan('→')} Initializing shadcn/ui (components.json not found)...`);
+    await run(command, args, projectRoot);
 
     const initialized = fs.existsSync(path.join(projectRoot, 'components.json'));
     if (initialized) {
-        console.log('✔ shadcn/ui initialized');
+        console.log(`${colors.green('✔')} shadcn/ui initialized`);
     }
     return initialized;
 }
@@ -56,9 +60,12 @@ export async function installShadcnComponents(
 ): Promise<void> {
     if (components.length === 0) return;
 
-    console.log(`\n→ Installing shadcn/ui components: ${components.join(', ')}`);
-    await run('npx', ['shadcn@latest', 'add', ...components, '--yes'], projectRoot);
-    console.log('✔ shadcn/ui components installed');
+    const pm = detectPackageManager(projectRoot);
+    const { command, args } = getExecuteCommand(pm, ['shadcn@latest', 'add', ...components, '--yes']);
+
+    console.log(`\n${colors.cyan('→')} Installing shadcn/ui components: ${colors.bold(components.join(', '))}`);
+    await run(command, args, projectRoot);
+    console.log(`${colors.green('✔')} shadcn/ui components installed`);
 }
 
 export async function installMissingDependencies(
@@ -75,7 +82,7 @@ export async function installMissingDependencies(
     if (!audit.hasComponentsJson) {
         const ready = await ensureShadcnInitialized(projectRoot);
         if (!ready) {
-            console.warn('\n⚠ Could not initialize shadcn/ui.');
+            console.warn(`\n${colors.yellow('⚠')} Could not initialize shadcn/ui.`);
             console.warn('  Run: npx shadcn@latest init --defaults --yes');
             console.warn(
                 `  Then: npx shadcn@latest add ${shadcnToInstall.join(' ')} --yes`,
@@ -93,22 +100,22 @@ export async function installMissingDependencies(
 export function printMissingDependencies(projectRoot: string, audit: DependencyAudit): void {
     if (audit.missingNpm.length === 0 && audit.missingShadcn.length === 0) return;
 
-    console.log('\nMissing dependencies:\n');
+    console.log(`\n${colors.yellow('Missing dependencies:')}\n`);
 
     if (audit.missingNpm.length > 0) {
-        console.log('  npm:', audit.missingNpm.join(', '));
+        console.log(`  ${colors.dim('npm:')} ${audit.missingNpm.join(', ')}`);
         const pm = detectPackageManager(projectRoot);
         const { command, args } = getInstallCommand(pm, [...audit.missingNpm]);
-        console.log(`  → ${command} ${args.join(' ')}\n`);
+        console.log(`  ${colors.cyan('→')} ${command} ${args.join(' ')}\n`);
     }
 
     if (audit.missingShadcn.length > 0) {
-        console.log('  shadcn:', audit.missingShadcn.join(', '));
+        console.log(`  ${colors.dim('shadcn:')} ${audit.missingShadcn.join(', ')}`);
         if (!audit.hasComponentsJson) {
-            console.log('  → npx shadcn@latest init --defaults --yes');
+            console.log(`  ${colors.cyan('→')} npx shadcn@latest init --defaults --yes`);
         }
         console.log(
-            `  → npx shadcn@latest add ${audit.missingShadcn.join(' ')} --yes\n`,
+            `  ${colors.cyan('→')} npx shadcn@latest add ${audit.missingShadcn.join(' ')} --yes\n`,
         );
     }
 }

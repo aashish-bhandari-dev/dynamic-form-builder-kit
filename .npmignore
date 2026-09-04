@@ -1,7 +1,11 @@
 src/
+dist/tests/
+src/tests/
+tests/
 .vscode/
 .idea/
 coverage/
 .github/
 *.log
 *.tsbuildinfo
+.DS_Store

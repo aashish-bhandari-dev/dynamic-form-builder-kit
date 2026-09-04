@@ -1,6 +1,7 @@
 import prompts from 'prompts';
 import type { DependencyAudit } from './dependencies';
 import { installMissingDependencies, printMissingDependencies } from './install';
+import { colors } from './colors';
 
 export type PromptInstallOptions = {
     projectRoot: string;
@@ -26,24 +27,24 @@ export async function promptAndInstallDependencies(
 
     const isInteractive = Boolean(process.stdin.isTTY && process.stdout.isTTY);
     if (!isInteractive) {
-        console.log('\nNon-interactive terminal — skipping auto-install.');
+        console.log(`\n${colors.dim('Non-interactive terminal — skipping auto-install.')}`);
         printMissingDependencies(projectRoot, audit);
-        console.log('Re-run with --yes to install automatically.\n');
+        console.log(`Re-run with ${colors.cyan('--yes')} to install automatically.\n`);
         return;
     }
 
     const lines: string[] = [];
     if (audit.missingNpm.length > 0) {
-        lines.push(`npm: ${audit.missingNpm.join(', ')}`);
+        lines.push(`${colors.bold('npm:')} ${audit.missingNpm.join(', ')}`);
     }
     if (audit.missingShadcn.length > 0) {
-        lines.push(`shadcn: ${audit.missingShadcn.join(', ')}`);
+        lines.push(`${colors.bold('shadcn:')} ${audit.missingShadcn.join(', ')}`);
     }
     if (!audit.hasComponentsJson && audit.missingShadcn.length > 0) {
-        lines.push('(will run shadcn init, then add missing components)');
+        lines.push(colors.dim('(will run shadcn init, then add missing components)'));
     }
 
-    console.log('\nThe following dependencies are missing:\n');
+    console.log(`\n${colors.yellow('The following dependencies are required:')}\n`);
     for (const line of lines) {
         console.log(`  • ${line}`);
     }

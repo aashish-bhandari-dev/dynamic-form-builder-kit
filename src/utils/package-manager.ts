@@ -30,3 +30,19 @@ export function getInstallCommand(
             return { command: 'npm', args: ['install', ...packages] };
     }
 }
+
+export function getExecuteCommand(
+    pm: PackageManager,
+    args: string[],
+): { command: string; args: string[] } {
+    switch (pm) {
+        case 'pnpm':
+            return { command: 'pnpm', args: ['dlx', ...args] };
+        case 'yarn':
+            return { command: 'yarn', args: ['dlx', ...args] };
+        case 'bun':
+            return { command: 'bunx', args: ['--bun', ...args] };
+        default:
+            return { command: 'npx', args };
+    }
+}

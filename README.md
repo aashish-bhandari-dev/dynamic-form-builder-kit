@@ -1,97 +1,195 @@
 # dynamic-form-builder-kit
 
-Copy a full drag-and-drop **form builder** into your app the same way [shadcn/ui](https://ui.shadcn.com) copies components: source files land in **your** repo under `components/form-builder/`, not inside `node_modules`.
+[![npm version](https://img.shields.io/npm/v/dynamic-form-builder-kit.svg?color=blue)](https://www.npmjs.com/package/dynamic-form-builder-kit)
+[![license](https://img.shields.io/npm/l/dynamic-form-builder-kit.svg)](https://github.com/Sandezh/dynamic-form-builder/blob/main/LICENSE)
+[![shadcn/ui](https://img.shields.io/badge/built%20for-shadcn%2Fui-black)](https://ui.shadcn.com)
+[![React](https://img.shields.io/badge/React-18%20%7C%2019-61dafb)](https://react.dev)
 
-Built on **shadcn/ui** primitives (`Button`, `Input`, `Tabs`, etc.).
+A modern, production-grade drag-and-drop **dynamic form builder** built for **shadcn/ui**. 
 
-## Prerequisites
+It copies clean, self-contained TypeScript components directly into your project repo under `components/form-builder/`—giving you 100% control, styling freedom, and zero vendor lock-in.
 
-- React 18+ / Next.js 14+ app
-- [shadcn/ui](https://ui.shadcn.com/docs/installation) initialized (`components.json` in the project root)
+---
 
-## Install
+## ✨ Features
 
-```bash
-npm install dynamic-form-builder-kit
-```
+- 🧩 **Self-Contained**: All components, types, and helpers live together in `components/form-builder/`. Zero scattered files, zero path alias headaches.
+- 🎨 **shadcn/ui Native**: Built on top of shadcn primitives (`Button`, `Input`, `Tabs`, `Card`, `Select`, `DropdownMenu`, etc.) with full Tailwind CSS theme support.
+- ⚡ **Universal React Support**: Compatible with Next.js (App Router & Pages Router), Vite, Remix, Astro, and Create React App. Zero hard dependency on `next`.
+- 📦 **Dual Usage**: Install component source code via CLI or import shared TypeScript types (`FormPayload`, `FormField`, etc.) directly from `dynamic-form-builder-kit` in your API routes and backend services.
+- 🛠️ **20+ Field Types**: Text, email, password, number, textarea, select, multi-select, date, time, datetime-local, radio, checkbox, switch, slider, rating, header, paragraph, image, and hidden.
+- 📐 **Interactive Grid & Row Layouts**: Drag-and-drop field reordering, multi-column rows (full, 1/2, 1/3, 1/4 widths), duplicate, delete, and real-time properties inspector.
+- 📱 **Responsive & Mobile-Ready**: Seamless tabbed interface on mobile screens and three-pane canvas on desktop.
 
-Installing the package does **not** copy files automatically (same as shadcn). Run the CLI once after install:
+---
+
+## 🚀 Quickstart
+
+In your project root (with shadcn/ui initialized):
 
 ```bash
 npx dynamic-form-builder-kit add
 ```
 
-Optional: run on every install in **your** app (not recommended for libraries):
+> **Prefer the official shadcn CLI?**  
+> You can also install directly via the shadcn registry:
+> ```bash
+> npx shadcn add https://raw.githubusercontent.com/Sandezh/dynamic-form-builder/main/registry/form-builder.json
+> ```
 
-```json
-{
-  "scripts": {
-    "postinstall": "dynamic-form-builder-kit add --force"
-  }
-}
-```
+The CLI will:
+1. Detect your package manager (`npm`, `pnpm`, `yarn`, or `bun`).
+2. Read your `components.json` path aliases.
+3. Copy all self-contained form builder components into `@/components/form-builder/`.
+4. Audit your dependencies and automatically offer to install any missing shadcn components or packages (`lucide-react`).
 
-## CLI
+---
 
-| Command | Description |
-|---------|-------------|
-| `npx dynamic-form-builder-kit add` | Copies components; prompts to install missing deps |
-| `npx dynamic-form-builder-kit add --yes` | Copy + install missing deps without prompting |
-| `npx dynamic-form-builder-kit add --skip-deps` | Copy files only, skip dependency checks |
-| `npx dynamic-form-builder-kit add --force` | Overwrite existing files |
-| `npx dynamic-form-builder-kit add -p src/components/form-builder` | Custom destination |
+## 💻 Usage in Your App
 
-The CLI reads `components.json` aliases so files go to the same folder as your other shadcn components (e.g. `src/components/form-builder`).
-
-After copying, the CLI **audits** your project for required npm packages (`lucide-react`) and shadcn/ui components. If anything is missing, you'll be asked to install them automatically (npm/pnpm/yarn/bun + `shadcn add`).
-
-## After `add`
-
-If you declined the install prompt or used `--skip-deps`, install manually:
-
-1. **shadcn components** (if missing):
-
-```bash
-npx shadcn@latest add button input tabs card label checkbox dropdown-menu select textarea radio-group slider switch --yes
-```
-
-2. **npm packages**:
-
-```bash
-npm install lucide-react
-```
-
-3. **Use in a page**:
+Once added, use the `<FormBuilder />` component in any page:
 
 ```tsx
-import { FormBuilder } from '@/components/form-builder/FormBuilder';
-import type { FormPayload } from '@/types/form-builder.types';
+'use client';
 
-export default function NewFormPage() {
+import { FormBuilder, type FormPayload } from '@/components/form-builder';
+
+export default function CreateFormPage() {
+  const handleSave = async (payload: FormPayload) => {
+    const response = await fetch('/api/forms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save form');
+    }
+  };
+
   return (
-    <FormBuilder
-      onSave={async (payload: FormPayload) => {
-        await fetch('/api/forms', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
-      }}
-    />
+    <main className="p-4 h-screen">
+      <FormBuilder
+        initialTitle="Customer Feedback Form"
+        onSave={handleSave}
+      />
+    </main>
   );
 }
 ```
 
-## What gets copied
+---
 
-| File | Destination | Role |
-|------|-------------|------|
-| `FormBuilder.tsx` | `components/form-builder/` | Main builder shell + save handler |
-| `FieldPalette.tsx` | `components/form-builder/` | Field / template palette |
-| `FormCanvas.tsx` | `components/form-builder/` | Drag-and-drop canvas + properties |
-| `FormPreview.tsx` | `components/form-builder/` | Live preview |
-| `form-builder.types.ts` | `types/` (created if missing) | Shared TypeScript types |
-| `form-builder-utils.ts` | `lib/` (uses `@/lib` alias) | `toFormFieldName` helper |
+## 🌐 Backend & API Integration
 
-## Customization
+You can import all shared types directly from `dynamic-form-builder-kit` in your API routes, server actions, or backend code without importing React components:
 
-Files are yours after install—edit them freely. Re-run `add --force` to reset from the registry (backs up changes first in git).
+```bash
+npm install dynamic-form-builder-kit
+```
+
+### Example: Next.js App Router API Route (`app/api/forms/route.ts`)
+
+```ts
+import { NextResponse } from 'next/server';
+import type { FormPayload } from 'dynamic-form-builder-kit';
+
+export async function POST(request: Request) {
+  const body: FormPayload = await request.json();
+
+  console.log('Form Title:', body.title);
+  console.log('Form Fields:', body.content.fields);
+  console.log('Form Rows:', body.content.rows);
+
+  // Persist schema to your database (Prisma, Drizzle, Supabase, Mongo, etc.)
+  // const saved = await db.form.create({ data: { title: body.title, schema: body.content } });
+
+  return NextResponse.json({ success: true, form: body });
+}
+```
+
+---
+
+## ⚙️ Props Reference
+
+The `<FormBuilder />` component accepts the following props:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `initialTitle` | `string` | `''` | Initial title of the form in the header. |
+| `initialContent` | `FormContent` | `undefined` | Existing form schema (`{ fields, rows }`) to load for editing. |
+| `onSave` | `(payload: FormPayload) => void \| Promise<void>` | `undefined` | Async callback triggered when user clicks "Save". |
+| `enableDefaultFields` | `boolean` | `true` | When `true`, prepopulates pinned fields (Full Name, Email, Phone). Set `false` for an empty canvas. |
+| `defaultFieldSpecs` | `DefaultFieldSpec[]` | `undefined` | Custom pinned fields configuration to replace standard defaults. |
+| `paletteFields` | `PaletteFieldTemplate[]` | `undefined` | Custom single-field templates available in the sidebar palette. |
+| `customFieldSets` | `CustomFieldSet[]` | `undefined` | Custom grouped field presets in the sidebar palette. |
+| `className` | `string` | `undefined` | Optional CSS class name appended to the outermost wrapper. |
+| `showPreview` | `boolean` | `true` | Whether to display the live preview pane. |
+| `isLoading` | `boolean` | `false` | When `true`, shows a loading skeleton in the canvas and preview. |
+
+---
+
+## 📁 What Gets Installed
+
+All files are copied cleanly into a single, self-contained directory:
+
+```
+components/form-builder/
+├── index.ts              # Clean entrypoint exporting FormBuilder, FormPreview, types, utils
+├── FormBuilder.tsx       # Main builder shell, header, and save state
+├── FormCanvas.tsx        # Drag-and-drop canvas, row grid, and property inspector
+├── FieldPalette.tsx      # Sidebar palette with field types and template presets
+├── FormPreview.tsx       # Live interactive form preview
+├── form-builder.data.ts  # Default field specifications and template presets
+├── types.ts              # TypeScript interfaces (FormField, FormRow, FormPayload, etc.)
+└── utils.ts              # Helper functions (toFormFieldName, etc.)
+```
+
+Because everything is self-contained:
+- You can move `components/form-builder/` anywhere (e.g. `src/features/forms/builder/`) without breaking imports.
+- You can freely customize the JSX and Tailwind styling.
+
+---
+
+## 🧰 CLI Command Options
+
+```bash
+npx dynamic-form-builder-kit add [options]
+```
+
+| Option | Flag | Description |
+|--------|------|-------------|
+| `--force` | `-f` | Overwrite existing files without error. |
+| `--path <path>` | `-p` | Custom destination path relative to project root. |
+| `--cwd <path>` | `-c` | Target project working directory (defaults to `process.cwd()`). |
+| `--yes` | `-y` | Install missing dependencies automatically without prompting. |
+| `--skip-deps` | | Copy component files only, skipping dependency checks. |
+
+---
+
+## 🧩 Required Dependencies
+
+If you run the CLI with `--skip-deps`, ensure the following are installed:
+
+### 1. npm packages
+```bash
+npm install lucide-react
+```
+
+### 2. shadcn/ui components
+```bash
+npx shadcn@latest add button input tabs card label checkbox dropdown-menu select textarea radio-group slider switch --yes
+```
+
+---
+
+## 🧪 Local Testing & Development
+
+Want to test or develop this package locally in another repo? Check out the complete step-by-step [Local Testing Guide](./LOCAL_TESTING_GUIDE.md).
+
+---
+
+## 📜 License
+
+MIT © [Sandesh](https://github.com/Sandezh)
+

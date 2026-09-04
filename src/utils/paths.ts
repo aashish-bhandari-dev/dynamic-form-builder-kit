@@ -111,6 +111,12 @@ export function getTypesAlias(projectRoot: string): string {
 
 /** `types/` at project root, or existing `src/types` if present. */
 export function getTypesDirectory(projectRoot: string): string {
+    const typesAlias = getTypesAlias(projectRoot);
+    const resolved = resolveAliasPath(projectRoot, typesAlias);
+    if (fs.existsSync(resolved)) {
+        return resolved;
+    }
+
     const rootTypes = path.join(projectRoot, 'types');
     if (fs.existsSync(rootTypes)) {
         return rootTypes;
@@ -121,7 +127,7 @@ export function getTypesDirectory(projectRoot: string): string {
         return srcTypes;
     }
 
-    return rootTypes;
+    return resolved;
 }
 
 export function getTypesFilePath(projectRoot: string, fileName: string): string {
