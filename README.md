@@ -110,6 +110,19 @@ export async function POST(request: Request) {
 
 ---
 
+## 📖 Comprehensive Implementation Guides
+
+We provide dedicated, production-grade, step-by-step implementation guides for both frontend and backend:
+
+- 🎨 **[Frontend Implementation Guide (Next.js)](./FRONTEND_IMPLEMENTATION.md)**:  
+  Complete walkthrough for Next.js App Router — covers `<FormBuilder />` page, dynamic public form renderer (`/forms/[id]`), submissions viewer, typed API client, and multi-column grid layouts.
+- ⚡ **[Backend Implementation Guide (Node.js)](./BACKEND_IMPLEMENTATION.md)**:  
+  Complete walkthrough for Node.js REST API — covers form CRUD, submission endpoints, shared TypeScript types, Zod validation, and database persistence (MongoDB, Prisma, and In-Memory store).
+- 🚀 **[Ready-to-Run Node.js Backend Example](./examples/backend-nodejs/)**:  
+  Zero-dependency, standalone mock backend server you can run instantly via `node examples/backend-nodejs/server.js`.
+
+---
+
 ## ⚙️ Props Reference
 
 The `<FormBuilder />` component accepts the following props:
